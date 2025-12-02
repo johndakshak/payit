@@ -3,10 +3,11 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User
-from app.enums import Gender, Category
+from app.enums import Gender
 from app.schema.users_schema import UserCreate, UserResponse, UserUpdate
 from app.security import hash_password
 from app.middleware.auth import JWTBearer
+from app.middleware.auth import authMiddleware
 import pymysql
 
 
@@ -35,7 +36,6 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         email=user.email,
         password=hashed_pwd,
         gender=user.gender,       
-        category=user.category, 
         location=user.location
     )
 
@@ -46,14 +46,14 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return new_user
 
 
-@router.get("/users", response_model=list[UserResponse])
-def get_users(db: Session = Depends(get_db)):
+@router.get("/", response_model=list[UserResponse])
+def get_users(db: Session = Depends(get_db), current_user: User = Depends(authMiddleware)):
     users = db.query(User).all()
     return users
 
 
-@router.get("/user/{user_id}", response_model=UserResponse)
-def get_user(user_id: int, db: Session = Depends(get_db)):
+@router.get("/{user_id}", response_model=UserResponse)
+def get_user(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(authMiddleware)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -61,7 +61,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{user_id}", response_model=UserResponse)
-def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db)):
+def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db), current_user: User = Depends(authMiddleware)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -78,8 +78,8 @@ def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_d
 
 
 
-@router.patch("/user/{user_id}", response_model=UserResponse)
-def patch_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db)):
+@router.patch("/{user_id}", response_model=UserResponse)
+def patch_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db), current_user: User = Depends(authMiddleware)):
 
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
@@ -96,9 +96,8 @@ def patch_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_db
     
     return user
 
-
-@router.delete("/user/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(get_db)):
+@router.delete("/{user_id}")
+def delete_user(user_id: int, db: Session = Depends(get_db), current_user: User = Depends(authMiddleware)):
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

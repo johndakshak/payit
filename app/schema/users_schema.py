@@ -2,15 +2,22 @@ from pydantic import BaseModel, Field, EmailStr, field_validator
 from typing import Optional
 from datetime import datetime
 import re
+from app.enums import Gender
 
 class UserCreate(BaseModel):
     name: str = Field(min_length=3, max_length=30)
     phone: str
     email: EmailStr
     password: str
-    gender: str
-    category: str
+    gender: Gender
     location: str
+
+    @field_validator('name', 'phone', 'password', 'location')
+    def no_whitespace(cls, v):
+        v = v.strip()  
+        if not v:
+            raise ValueError('must not be empty or whitespace')
+        return v
 
     @field_validator("phone")
     def validate_phone(cls, value):
@@ -67,7 +74,6 @@ class UserResponse(BaseModel):
     phone: str
     email: str
     gender: str
-    category: str
     location: str
     created_at: datetime
     updated_at: datetime
@@ -81,7 +87,6 @@ class UserUpdate(BaseModel):
     email: Optional[str] = None
     password: Optional[str] = None
     gender: Optional[str] = None
-    category: Optional[str] = None
     location: Optional[str] = None
 
     @field_validator("phone")

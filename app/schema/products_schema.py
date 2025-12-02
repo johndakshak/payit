@@ -1,36 +1,58 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime
-from app.enums import Gender, Category  
-
+from app.enums import ProductCategoryEnum
 
 class ProductCreate(BaseModel):
     name: str = Field(..., max_length=50)
-    user_id: int
-    price: float = Field(..., gt=0, description="Price must be greater than 0")
-    quantity: int = Field(..., gt=0, description="Quantity must be a positive integer")
-    category: str
+    description: str
+    img_url: str
+    location: str
+    price: float = Field(..., gt=0)
+    quantity: int = Field(..., gt=0)
+    category: ProductCategoryEnum
+    location: str
+
+    @field_validator('name')
+    def no_whitespace(cls, v):
+        v = v.strip()  
+        if not v:
+            raise ValueError('must not be empty or whitespace')
+        return v
 
     model_config = {"from_attributes": True}
-
-
-class ProductUpdate(BaseModel):
-    name: Optional[str] = Field(None, max_length=50)
-    price: Optional[float] = Field(None, gt=0)
-    quantity: Optional[int] = Field(None, gt=0)
-    category: Optional[str] = None
-
-    model_config = {"from_attributes": True}
-
 
 class ProductResponse(BaseModel):
     id: int
     name: str
-    user_id: int
+    description: str
+    img_url: str
     price: float
     quantity: int
-    category: str
+    category: ProductCategoryEnum
+    location: str
+    farmer_id: int
+    category_id: int
     created_at: datetime
     updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+class ProductUpdate(BaseModel):
+    name: str = Field(..., max_length=50)
+    description: str
+    img_url: str
+    location: str
+    price: float = Field(..., gt=0)
+    quantity: int = Field(..., gt=0)
+    category: ProductCategoryEnum
+    location: str
+
+    @field_validator('name')
+    def no_whitespace(cls, v):
+        v = v.strip()  
+        if not v:
+            raise ValueError('must not be empty or whitespace')
+        return v
 
     model_config = {"from_attributes": True}

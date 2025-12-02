@@ -2,9 +2,9 @@ import os
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
 
-SECRET_KEY = os.getenv("SECRET_KEY", "secret")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRATION = int(os.getenv("ACCESS_TOKEN_EXPIRATION", 30))  # in minutes
+SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+ALGORITHM = os.getenv('JWT_ALGORITHM')
+ACCESS_TOKEN_EXPIRATION = int(os.getenv('JWT_EXPIRATION_TIME')) 
 
 
 def create_access_token(data: dict):

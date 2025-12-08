@@ -46,6 +46,7 @@ async def callback(request: Request, db: Session = Depends(get_db)):
                 gender=Gender.M.value,
                 location="Jos"
             )
+            
             db.add(user)
             db.commit()
             db.refresh(user)

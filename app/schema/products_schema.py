@@ -11,7 +11,6 @@ class ProductCreate(BaseModel):
     price: float = Field(..., gt=0)
     quantity: int = Field(..., gt=0)
     category: ProductCategoryEnum
-    location: str
 
     @field_validator('name')
     def no_whitespace(cls, v):
@@ -39,18 +38,19 @@ class ProductResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 class ProductUpdate(BaseModel):
-    name: str = Field(..., max_length=50)
-    description: str
-    img_url: str
-    location: str
-    price: float = Field(..., gt=0)
-    quantity: int = Field(..., gt=0)
-    category: ProductCategoryEnum
-    location: str
+    name: Optional[str] = None
+    description: Optional[str] = None
+    img_url: Optional[str] = None
+    location: Optional[str] = None
+    price: Optional[float] = Field(None, gt=0)
+    quantity: Optional[int] = Field(None, gt=0)
+    category: Optional[ProductCategoryEnum] = None
 
     @field_validator('name')
     def no_whitespace(cls, v):
-        v = v.strip()  
+        if v is None:
+            return v
+        v = v.strip()
         if not v:
             raise ValueError('must not be empty or whitespace')
         return v

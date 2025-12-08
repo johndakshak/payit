@@ -13,13 +13,13 @@ from .routes import product_routes
 from app.routes import auth_route
 from app.routes import product_category_routes
 from app.routes import orders_route
+from app.routes import cloudinary_routes
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from app.routes import oauth_routes
+from app.routes import cloudinary_routes
 import os
 from fastapi.staticfiles import StaticFiles
-
-
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +39,7 @@ app.include_router(auth_route.router)
 app.include_router(product_category_routes.router)
 app.include_router(orders_route.router)
 app.include_router(oauth_routes.router)
+app.include_router(cloudinary_routes.router)
 
 app.add_middleware(
     SessionMiddleware,

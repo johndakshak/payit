@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Form, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
-from app.database import get_db
-from app.models.products import Product
-from app.models.farmers import Farmer
-from app.models.product_category import ProductCategoryModel
-from app.schema.products_schema import ProductCreate, ProductResponse, ProductUpdate
-from app.enums import ProductCategoryEnum
-from app.middleware.auth import User, get_current_user
-from app.middleware.auth import authMiddleware
+from database import get_db
+from models.products import Product
+from models.farmers import Farmer
+from models.product_category import ProductCategoryModel
+from schema.products_schema import ProductCreate, ProductResponse, ProductUpdate
+from enums import ProductCategoryEnum
+from middleware.auth import User, get_current_user
+from middleware.auth import authMiddleware
 import os
 import aiofiles
 from uuid import UUID, uuid4

@@ -16,4 +16,6 @@ httpx
 authlib
 
 cloudinary
+alembic
+
 

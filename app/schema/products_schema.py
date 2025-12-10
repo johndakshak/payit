@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime
-from app.enums import ProductCategoryEnum
+from enums import ProductCategoryEnum
 
 class ProductCreate(BaseModel):
     name: str = Field(..., max_length=50)

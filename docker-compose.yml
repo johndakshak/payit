@@ -23,7 +23,7 @@ services:
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
     volumes:
-      - ./app:/app/app
+      - ./app:/app
       - ./app/static/uploads:/app/app/static/uploads
     depends_on:
       payit_db:

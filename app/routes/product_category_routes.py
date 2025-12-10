@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from app.models.user import User
-from app.middleware.auth import authMiddleware
-from app.database import get_db
-from app.models.product_category import ProductCategoryModel
-from app.schema.product_category_schema import ProductCategoryCreate, ProductCategoryResponse
+from models.user import User
+from middleware.auth import authMiddleware
+from database import get_db
+from models.product_category import ProductCategoryModel
+from schema.product_category_schema import ProductCategoryCreate, ProductCategoryResponse
 
 router = APIRouter(prefix="/categories", tags=["Product Categories"])
 

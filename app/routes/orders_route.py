@@ -1,16 +1,16 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.products import Product
-from app.models.farmers import Farmer
-from app.models.buyers import Buyer
-from app.models.orders import Order
-from app.models.product_category import ProductCategoryModel
-from app.schema.products_schema import ProductCreate, ProductResponse, ProductUpdate
-from ..schema.order_schema import OrderCreate, OrderResponse, OrderUpdate
-from app.enums import ProductCategoryEnum, OrderStatusEnum
-from app.middleware.auth import User, get_current_user
-from app.middleware.auth import authMiddleware
+from database import get_db
+from models.products import Product
+from models.farmers import Farmer
+from models.buyers import Buyer
+from models.orders import Order
+from models.product_category import ProductCategoryModel
+from schema.products_schema import ProductCreate, ProductResponse, ProductUpdate
+from schema.order_schema import OrderCreate, OrderResponse, OrderUpdate
+from enums import ProductCategoryEnum, OrderStatusEnum
+from middleware.auth import User, get_current_user
+from middleware.auth import authMiddleware
 
 
 router = APIRouter(prefix="/orders", tags=["Orders"])

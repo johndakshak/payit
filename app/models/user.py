@@ -1,8 +1,9 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum, func
-from app.models.base import Base
+from models.base import Base
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app.enums import Gender
+from enums import Gender
+from enums import UserRole
 
 class User(Base):
     __tablename__ = 'users'
@@ -14,6 +15,7 @@ class User(Base):
     password = Column(String(100), nullable=True) 
     gender = Column(Enum(Gender), nullable=False) 
     location = Column(String(255), nullable=False)
+    role = Column(Enum(UserRole), nullable=False, default=UserRole.USER.value, server_default="user")
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(),nullable=False)
     

@@ -1,29 +1,29 @@
 import logging
 from fastapi import FastAPI
-from .models.base import Base
-from .models.user import User
-from .models.product_category import ProductCategoryModel  
-from .models.products import Product 
-from .models.farmers import Farmer
-from .models.buyers import Buyer
-from .models.orders import Order
-from app.database import engine
-from .routes import users_routes
-from .routes import product_routes
-from app.routes import auth_route
-from app.routes import product_category_routes
-from app.routes import orders_route
-from app.routes import cloudinary_routes
+from models.base import Base
+from models.user import User
+from models.product_category import ProductCategoryModel  
+from models.products import Product 
+from models.farmers import Farmer
+from models.buyers import Buyer
+from models.orders import Order
+from database import engine
+from routes import users_routes
+from routes import product_routes
+from routes import auth_route
+from routes import product_category_routes
+from routes import orders_route
+from routes import cloudinary_routes
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from app.routes import oauth_routes
-from app.routes import cloudinary_routes
+from routes import oauth_routes
+from routes import cloudinary_routes
 import os
 from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger(__name__)
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title = "PayIt App",

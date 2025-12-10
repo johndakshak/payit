@@ -17,6 +17,10 @@ class OrderStatusEnum(str, Enum):
     PROCESSING = "processing"
     COMPLETED = "completed"
 
+class UserRole(str, Enum):
+    USER = "user"
+    ADMIN = "admin"
+
 
 
 

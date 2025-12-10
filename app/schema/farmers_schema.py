@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import datetime
-from app.enums import Gender, Category  
+from enums import Gender, Category  
 
 class Farmers(BaseModel):
     id: int

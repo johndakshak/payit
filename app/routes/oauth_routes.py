@@ -1,15 +1,15 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Request
 from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.user import User
-from app.enums import Gender
-from app.schema.users_schema import UserCreate, UserResponse, UserUpdate
-from app.security import hash_password
-from app.middleware.auth import JWTBearer
-from app.middleware.auth import authMiddleware
-from app.config.oauth import oauth
-from app.config.oauth import AUTH0_DOMAIN, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL, AUTH0_CLIENT_SECRET
-from app.auth.jwt import create_access_token
+from database import get_db
+from models.user import User
+from enums import Gender
+from schema.users_schema import UserCreate, UserResponse, UserUpdate
+from security import hash_password
+from middleware.auth import JWTBearer
+from middleware.auth import authMiddleware
+from config.oauth import oauth
+from config.oauth import AUTH0_DOMAIN, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL, AUTH0_CLIENT_SECRET
+from auth.jwt import create_access_token
 from fastapi.responses import RedirectResponse
 import pymysql
 
@@ -38,14 +38,24 @@ async def callback(request: Request, db: Session = Depends(get_db)):
         user = db.query(User).filter(User.email == user_info["email"]).first()
 
         if not user:
+            # user = User(
+            #     name=user_info.get("name"),
+            #     phone="12345678901",
+            #     email=user_info["email"],
+            #     password=hash_password("James1"),
+            #     gender=Gender.M.value,
+            #     location="Jos"
+            # )
+
             user = User(
                 name=user_info.get("name"),
-                phone="12345678901",
-                email=user_info["email"],
-                password=hash_password("James1"),
-                gender=Gender.M.value,
-                location="Jos"
+                phone=user_info.get("phone"),
+                email=user_info.get("email"),
+                password=hash_password(user_info.get("password")),
+                gender=user_info.get("gender", Gender.M.value),
+                location=user_info.get("location")
             )
+
             
             db.add(user)
             db.commit()

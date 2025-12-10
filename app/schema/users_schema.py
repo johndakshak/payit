@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, EmailStr, field_validator
 from typing import Optional
 from datetime import datetime
 import re
-from app.enums import Gender
+from enums import Gender
 
 class UserCreate(BaseModel):
     name: str = Field(min_length=3, max_length=30)
